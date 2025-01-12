@@ -1,43 +1,59 @@
-import { mnemonicToSeed } from "bip39";
-import { derivePath } from "ed25519-hd-key";
-import { Keypair } from "@solana/web3.js";
-import nacl from "tweetnacl";
 import { useState } from "react";
+import { mnemonicToSeed } from "bip39";
+import { HDKey } from "micro-ed25519-hdkey";
+import { Buffer } from "buffer";
+import { Keypair } from "@solana/web3.js";
 
-export const GetSolWallet = ({ mnemonic }: { mnemonic: string }) => {
+if (typeof window !== "undefined") {
+    window.Buffer = Buffer;
+}
+
+export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [publicKeys, setPublicKeys] = useState<string[]>([]);
+    const [wallets, setWallets] = useState([]);
+    const [error, setError] = useState(null);
 
-    const addWallet = async () => {
+    const handleAddWallet = async () => {
         try {
-            const seed = await mnemonicToSeed(mnemonic); // Wait for seed
-            console.log("here" , seed)
-            const path = `m/44'/501'/${currentIndex}'/0'`;
-            console.log("here" , path)
-            const derivedSeed = derivePath(path, seed.toString("hex")).key;
-            console.log("keypair" , derivePath)
-            const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
-            const keypair = Keypair.fromSecretKey(secret);
-            console.log("keypair" , keypair)
-            setCurrentIndex((prevIndex) => prevIndex + 1);
-            setPublicKeys((prevKeys) => [...prevKeys, keypair.publicKey.toBase58()]);
-        } catch (error) {
-            console.error("Error generating wallet:", error);
+            // Generate seed from mnemonic
+            const seed = await mnemonicToSeed(mnemonic , "");
+            const hd = HDKey.fromMasterSeed(seed.toString("hex"));
+            // Derive Solana-compatible keypair
+            const derivationPath = `m/44'/501'/${currentIndex}'/0'`;
+            const keypair = Keypair.fromSeed(hd.derive(derivationPath).privateKey);
+
+
+            const publicKey = keypair.publicKey.toBase58();
+            const privateKey = Buffer.from(keypair.secretKey).toString("hex");
+
+            // Log keys to console
+            console.log(`Solana Address: ${publicKey}`);
+            console.log(`Private Key: ${privateKey}`);
+
+            // Update state
+            setCurrentIndex(currentIndex + 1);
+            setWallets([...wallets, { publicKey, privateKey }]);
+        } catch (err) {
+            console.error("Failed to generate wallet:", err);
+            setError("An error occurred while generating the wallet.");
         }
     };
 
     return (
         <div>
-            <button onClick={addWallet} className="bg-blue-500 text-white p-2 rounded">
-                Add Wallet
-            </button>
-            <div>
-                {publicKeys.map((key, index) => (
-                    <div key={index} className="mt-2">
-                        {key}
-                    </div>
-                ))}
-            </div>
+            <button onClick={handleAddWallet}>Add Solana Wallet</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
+            {wallets.map((wallet, index) => (
+                <div key={index}>
+                    <p><strong>Solana Address:</strong> {wallet.publicKey}</p>
+                    <p><strong>Private Key:</strong> {wallet.privateKey}</p>
+                </div>
+            ))}
+
+            {wallets.length > 0 && (
+                <button onClick={() => setWallets([])}>Clear Wallets</button>
+            )}
         </div>
     );
 };
