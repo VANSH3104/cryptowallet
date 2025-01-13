@@ -3,7 +3,8 @@ import { mnemonicToSeed } from "bip39";
 import { HDKey } from "micro-ed25519-hdkey";
 import { Buffer } from "buffer";
 import { Keypair } from "@solana/web3.js";
-
+import { MdDelete } from "react-icons/md";
+import { IoCopy } from "react-icons/io5";       
 if (typeof window !== "undefined") {
     window.Buffer = Buffer;
 }
@@ -33,16 +34,23 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
             setError("An error occurred while generating the wallet.");
         }
     };
-
+    const handleDeleteWalletindex = (currentIndex: number)=>{
+        setWallets((wallet)=>wallet.filter((_, index)=>index !==currentIndex));
+        console.log(wallets)
+    }
+    const handleDeleteWallet = ()=>{
+        localStorage.setItem("mnemonic" , "")
+        window.location.reload();
+    }
     return (
-        <div className="md:px-12 lg:px-[166px] p-6">
+        <div className="">
             <div className="md:flex grid gap-2 justify-between">
                 <div className="text-2xl  md:text-4xl font-bold p-2 font-sans ">
                     Solana Wallet
                 </div>
                 <div className="flex gap-2">   
                     <button 
-                        className="bg-gray-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-gray-800
+                        className="bg-neutral-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-neutral-900
                             sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
                         onClick={handleAddWallet}
                         >
@@ -52,54 +60,54 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                     <button 
                         className="bg-red-500 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center 
                             sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
-                        onClick={handleAddWallet}
+                        onClick={handleDeleteWallet}
                         >
                         Delete Walt
                     </button>
                 </div>
             </div>
-            <div className="space-y-4 pt-3 bg-gray-800 mt-6">
+            <div className="space-y-4 pt-3 dark:bg-neutral-900 bg-white mt-6 rounded-xl">
                 {wallets.map((wallet, index) => (
                     <div key={index} className="p-4 rounded-lg shadow-md flex flex-col space-y-3">
                     <div className="flex justify-between items-center">
                         <p className="font-semibold text-xl md:text-3xl">Wallet {index + 1}</p>
                         <button
-                        //   onClick={() => handleDeleteWallet(index)}
-                        className="text-red-500 hover:text-red-700  font-semibold"
+                          onClick={() => handleDeleteWalletindex(index)}
+                        className="text-red-500 hover:text-red-700 text-2xl p-3"
                         >
-                        Delete
+                        <MdDelete />
                         </button>
                     </div>
                     
                     <div className="space-y-2">
                         <div className="flex justify-between items-center">
-                        <p className="font-medium w-full sm:w-auto truncate"><strong className="text-lg">Solana Address:</strong>
-                        <div className="truncate text-sm">
+                        <p className="font-medium w-full sm:w-auto truncate"><strong className="text-lg">Solana Address</strong>
+                        <div className="truncate text-lg pt-2">
                         {wallet.publicKey}
                         </div> 
                         </p>
                         <button
-                            // onClick={() => copyToClipboard(wallet.publicKey)}
-                            className="bg-blue-500 text-white p-2 rounded-lg text-sm"
+                            onClick={() => navigator.clipboard.writeText(wallet.publicKey)}
+                            className="text-white p-4 rounded-lg text-sm"
                         >
-                            Copy
+                            <IoCopy className="text-xl" />
                         </button>
                         </div>
 
                         <div className="flex justify-between items-center">
-                        <p className="font-medium"><strong>Private Key:</strong> 
+                        <p className="font-medium"><strong className="text-lg">Private Key</strong> 
                             <input
                             type="password"
                             value={wallet.privateKey}
                             readOnly
-                            className="dark:bg-gray-700 bg-white p-2 rounded-lg w-60"
+                            className="dark:bg-neutral-800 mt-2 bg-white p-2 rounded-lg w-full"
                             />
                         </p>
                         <button
-                            // onClick={() => copyToClipboard(wallet.privateKey)}
-                            className="bg-blue-500 text-white p-2 rounded-lg text-sm"
+                            onClick={() => navigator.clipboard.writeText(wallet.privateKey)}
+                            className="text-white p-4 rounded-lg text-sm"
                         >
-                            Copy
+                            <IoCopy className="text-xl" />
                         </button>
                         </div>
                     </div>

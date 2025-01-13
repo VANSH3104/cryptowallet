@@ -10,7 +10,7 @@ export const Navbar = () => {
   const colorMode = useContext(colorModeContext);
 
   return (
-    <div className="w-full h-[100px] bg-white dark:bg-gray-900 text-black dark:text-white rounded-b-2xl shadow-xl flex justify-between items-center px-4 md:px-12 lg:px-[166px]">
+    <div className="w-full h-[100px] bg-white dark:bg-neutral-900 text-black dark:text-white rounded-b-2xl shadow-xl flex justify-between items-center px-4 md:px-12 lg:px-[166px]">
       <div className="font-bold text-[28px] md:text-[32px] lg:text-[40px] flex items-center gap-2">
         <FaWallet onClick={handleWalletClick} /> Vwallet
       </div>

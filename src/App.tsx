@@ -1,11 +1,8 @@
-import { GetMnemonics, UseMnemonics } from "./components/Getmnemonics ";
-import { EthWallet } from "./components/GettingEthWallet";
-import { SolanaWallet } from "./components/GettingsolanaWallet";
+import { GetMnemonics } from "./components/Getmnemonics ";
 import { Navbar } from "./components/Navbar";
 
 function App() {
-  const { mnemonic } = UseMnemonics();
-
+  
   return (
     <div className="flex h-screen dark:text-white dark:bg-black bg-white text-black overflow-hidden">
       <header className="fixed top-0 left-0 w-full z-10">
@@ -13,7 +10,7 @@ function App() {
       </header>
       <main className="flex-grow overflow-y-auto p-4 pt-[120px]">
         <GetMnemonics />
-        {mnemonic !="" && (
+        {/* {mnemonic !="" && (
         <>
           <div className="mt-6">
             <SolanaWallet mnemonic={`${mnemonic}`} />
@@ -21,7 +18,7 @@ function App() {
           <div className="mt-6">
             <EthWallet mnemonic={`${mnemonic}`} />
           </div>
-        </>)}   
+        </>)}    */}
       </main>
     </div>
   );
