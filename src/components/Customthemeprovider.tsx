@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { createContext, useState, useEffect } from "react";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const colorModeContext = createContext<() => void>(() => {});
 
 const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
