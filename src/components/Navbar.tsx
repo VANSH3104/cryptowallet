@@ -2,8 +2,9 @@ import { Switch } from "@mui/material";
 import { useContext } from "react";
 import { FaWallet } from "react-icons/fa";
 import { colorModeContext } from "./Customthemeprovider";
+import { CiDark } from "react-icons/ci";
+import { CiLight } from "react-icons/ci";
 const handleWalletClick = () => {
-    // Replace the URL with your desired destination
     window.location.href = "https://github.com/VANSH3104";
   };
 export const Navbar = () => {
@@ -14,12 +15,19 @@ export const Navbar = () => {
       <div className="font-bold text-[28px] md:text-[32px] lg:text-[40px] flex items-center gap-2">
         <FaWallet onClick={handleWalletClick} /> Vwallet
       </div>
-      <div>
+      <div className="flex">
+        <div className="text-2xl p-2  ">
+          <CiDark/>
+        </div>
         <Switch
+          color="default"
           onChange={() => colorMode()}
           inputProps={{ "aria-label": "Theme toggle" }}
           title="Toggle theme"
         />
+        <div className="text-2xl p-2">
+          <CiLight/>
+        </div>
       </div>
     </div>
   );

@@ -88,7 +88,7 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                         </p>
                         <button
                             onClick={() => navigator.clipboard.writeText(wallet.publicKey)}
-                            className="text-white p-4 rounded-lg text-sm"
+                            className="dark:text-white text-black p-4 rounded-lg text-sm"
                         >
                             <IoCopy className="text-xl" />
                         </button>
@@ -105,7 +105,7 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                         </p>
                         <button
                             onClick={() => navigator.clipboard.writeText(wallet.privateKey)}
-                            className="text-white p-4 rounded-lg text-sm"
+                            className="dark:text-white text-black p-4 rounded-lg text-sm"
                         >
                             <IoCopy className="text-xl" />
                         </button>
