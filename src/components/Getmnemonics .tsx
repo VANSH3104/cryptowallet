@@ -23,10 +23,15 @@ export const GetMnemonics = () => {
 
     return (
         <div>
-            <p className="bg-black font-bold text-white">
-                {mnemonic?.split("").map((char , index)=>(
-                <span  className = ""key={index}>{char}</span>
-            ))}</p>
+            <div className="grid md:grid-cols-4 md:gap-3 grid-cols-2 gap-1 bg-[#13418b] p-3">
+                {mnemonic?.split(" ").map((word , index)=>(
+                <div
+                key={index}
+                className="bg-black text-white font-bold p-2 rounded text-center"
+            >
+                {word}
+            </div>
+            ))}</div>
             <button onClick={handleGenerateMnemonic} className="bg-red-300">Click</button>
         </div>
     );
