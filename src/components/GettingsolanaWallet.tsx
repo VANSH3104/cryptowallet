@@ -5,6 +5,7 @@ import { Buffer } from "buffer";
 import { Keypair } from "@solana/web3.js";
 import { MdDelete } from "react-icons/md";
 import { IoCopy } from "react-icons/io5";       
+import AlertDialogSlide from "./sendcrypto";
 if (typeof window !== "undefined") {
     window.Buffer = Buffer;
 }
@@ -70,7 +71,10 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                 {wallets.map((wallet, index) => (
                     <div key={index} className="p-4 rounded-lg shadow-md flex flex-col space-y-3">
                     <div className="flex justify-between items-center">
-                        <p className="font-semibold text-xl md:text-3xl">Wallet {index + 1}</p>
+                        <div className="flex">
+                        <p className="font-semibold text-lg md:text-3xl pt-2 md:pt-1">Wallet {index + 1}</p>
+                        <div className="pl-3"><AlertDialogSlide crypto="Solana"/></div>
+                        </div>
                         <button
                           onClick={() => handleDeleteWalletindex(index)}
                         className="text-red-500 hover:text-red-700 text-2xl p-3"
