@@ -4,6 +4,7 @@ import { Wallet, HDNodeWallet } from "ethers";
 import { Buffer } from "buffer";
 import { MdDelete } from "react-icons/md";
 import { IoCopy } from "react-icons/io5"; 
+import EthereumSend from "./sendEth";
 if (typeof window !== "undefined") {
     window.Buffer = Buffer;
 }
@@ -62,7 +63,7 @@ export const EthWallet = ({ mnemonic }: { mnemonic: string }) => {
                 </div>
                 <div className="flex gap-2">   
                     <button 
-                        className="bg-neutral-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-neutral-900
+                        className="bg-red-500 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-red-500
                             sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
                         onClick={addEthWallet}
                         >
@@ -70,11 +71,11 @@ export const EthWallet = ({ mnemonic }: { mnemonic: string }) => {
                     </button>
                 {error && <p style={{ color: "red" }}>{error}</p>}
                     <button 
-                        className="bg-red-500 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center 
-                            sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
+                        className="bg-neutral-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center 
+                            sm:p-3 sm:text-base md:p-4 md:text-sm lg:p-5 lg:text-lg"
                         onClick={handleDeleteWallet}
                         >
-                        Delete Walt
+                        Delete Wallet
                     </button>
                 </div>
             </div>
@@ -82,7 +83,9 @@ export const EthWallet = ({ mnemonic }: { mnemonic: string }) => {
                 {wallets.map((wallet, index) => (
                     <div key={index} className="p-4 rounded-lg shadow-md flex flex-col space-y-3">
                     <div className="flex justify-between items-center">
+                        <div className="flex">
                         <p className="font-semibold text-xl md:text-3xl">Wallet {index + 1}</p>
+                        <div className="pl-3"><EthereumSend publicKey={wallet.publicKey} senderPrivateKey={wallet.privateKey}/></div></div>
                         <button
                             onClick={() => handleDeleteWalletindex(index)}
                         className="text-red-500 hover:text-red-700 text-2xl p-3"

@@ -9,8 +9,8 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Input } from '@mui/material';
 import { forwardRef, Fragment, useEffect, useState } from 'react';
 import axios from "axios";
-import { Connection, Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
-import { toast } from 'react-toastify';  // Import the toast notification
+import { toast } from 'react-toastify';
+import { ethers } from "ethers";  // Import ethers.js for Ethereum interaction
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,12 +21,12 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface Solanatype {
-  senderPrivateKey: Uint8Array,
+interface EthereumType {
+  senderPrivateKey: string;
   publicKey: string;
 }
 
-export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) {
+export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumType) {
   const [open, setOpen] = useState(false);
   const [recipient, setRecipient] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -40,30 +40,25 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
     setOpen(false);
   };
 
-  const link = import.meta.env.VITE_SOLANA_API;
-
+  const link = import.meta.env.VITE_ETHEREUM_API;
   async function handleTransfer() {
     if (amount <= 0) {
       toast.error("Insufficient funds for the transaction.");
       return;
     }
 
-    const connection = new Connection(link, 'confirmed');
-    const sender = Keypair.fromSecretKey(senderPrivateKey);
-    const lamports = balance * 1e9;
-
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: sender.publicKey,
-        toPubkey: new PublicKey(recipient),
-        lamports,
-      })
-    );
+    const provider = new ethers.JsonRpcProvider(link);
+    const wallet = new ethers.Wallet(senderPrivateKey, provider);
+    const weiAmount = ethers.parseEther(balance.toString());
 
     try {
-      const signature = await connection.sendTransaction(transaction, [sender]);
-      toast.success(`Transaction successful: ${signature}`);
-      console.log('Transaction Signature:', signature);
+      const tx = await wallet.sendTransaction({
+        to: recipient,
+        value: weiAmount
+      });
+
+      toast.success(`Transaction successful: ${tx.hash}`);
+      console.log('Transaction Hash:', tx.hash);
     } catch (error) {
       toast.error("Transaction failed.");
       console.error("Transaction Error:", error);
@@ -75,11 +70,13 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
       const amount = await axios.post(`${link}`, {
         "jsonrpc": "2.0",
         "id": 1,
-        "method": "getBalance",
-        "params": [`${publicKey}`]
+        "method": "eth_getBalance",
+        "params": [publicKey, "latest"]
       });
-      const lamports = amount.data.result.value / 1_000_000_000;
-      setAmount(lamports);
+
+      const balanceInWei = parseInt(amount.data.result, 16);
+      const balanceInEth = ethers.formatEther(balanceInWei);
+      setAmount(parseFloat(balanceInEth));
     };
     fetchAmount();
   }, [link, publicKey]);
@@ -108,7 +105,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{`Send Solana`}</DialogTitle>
+        <DialogTitle>{`Send Ethereum`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <div>
@@ -117,7 +114,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
                   Current Balance:
                 </div>
                 <div className='text-xl'>
-                  {amount} Sol
+                  {amount} ETH
                 </div>
               </div>
               <div>
@@ -136,7 +133,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
                     color='primary'
                     size='medium'
                     placeholder='Enter the amount'
-                    onChange={(e) => setBalance(parseInt(e.target.value))}
+                    onChange={(e) => setBalance(parseFloat(e.target.value))}
                   />
                 </div>
               </div>

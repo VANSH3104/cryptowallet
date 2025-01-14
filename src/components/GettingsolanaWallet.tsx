@@ -51,7 +51,7 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                 </div>
                 <div className="flex gap-2">   
                     <button 
-                        className="bg-neutral-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-neutral-900
+                        className="bg-red-500 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center dark:text-white dark:bg-red-500
                             sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
                         onClick={handleAddWallet}
                         >
@@ -59,11 +59,11 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
                     </button>
                 {error && <p style={{ color: "red" }}>{error}</p>}
                     <button 
-                        className="bg-red-500 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center 
-                            sm:p-3 sm:text-base md:p-4 md:text-lg lg:p-5 lg:text-xl"
+                        className="bg-neutral-900 text-white p-4 font-semibold text-lg rounded-xl flex items-center justify-center 
+                            sm:p-3 sm:text-base md:p-4 md:text-sm lg:p-5 lg:text-lg"
                         onClick={handleDeleteWallet}
                         >
-                        Delete Walt
+                        Delete Wallet
                     </button>
                 </div>
             </div>
