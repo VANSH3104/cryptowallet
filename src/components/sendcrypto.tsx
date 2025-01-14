@@ -43,10 +43,16 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
   const link = import.meta.env.VITE_SOLANA_API;
 
   async function handleTransfer() {
-    if (amount <= 0) {
-      toast.error("Insufficient funds for the transaction.");
-      return;
-    }
+    if(recipient === ""){
+      toast.error("Address is empty")
+  }
+  else if(balance<=0){
+      toast.error("Balance should be more than 0")
+  }
+  else if (amount <= 0) {
+    toast.error("Insufficient funds for the transaction.");
+    return;
+  }
 
     const connection = new Connection(link, 'confirmed');
     const sender = Keypair.fromSecretKey(senderPrivateKey);
