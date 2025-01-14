@@ -63,7 +63,6 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
     try {
       const signature = await connection.sendTransaction(transaction, [sender]);
       toast.success(`Transaction successful: ${signature}`);
-      console.log('Transaction Signature:', signature);
     } catch (error) {
       toast.error("Transaction failed.");
       console.error("Transaction Error:", error);

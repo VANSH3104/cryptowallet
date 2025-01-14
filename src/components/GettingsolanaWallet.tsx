@@ -26,8 +26,6 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
             const keypair = Keypair.fromSeed(hd.derive(derivationPath).privateKey);
             const publicKey = keypair.publicKey.toBase58();
             const privateKey = Buffer.from(keypair.secretKey).toString("hex");
-            console.log(`Solana Address: ${publicKey}`);
-            console.log(`Private Key: ${privateKey}`);
             setCurrentIndex(currentIndex + 1);
             setWallets([...wallets, { publicKey, privateKey }]);
         } catch (err) {
@@ -37,7 +35,6 @@ export const SolanaWallet = ({mnemonic}: {mnemonic: string}) => {
     };
     const handleDeleteWalletindex = (currentIndex: number)=>{
         setWallets((wallet)=>wallet.filter((_, index)=>index !==currentIndex));
-        console.log(wallets)
     }
     const handleDeleteWallet = ()=>{
         localStorage.setItem("mnemonic" , "")

@@ -26,13 +26,6 @@ export const EthWallet = ({ mnemonic }: { mnemonic: string }) => {
             const privateKey = child.privateKey;
             const publicKey = child.publicKey;
             const wallet = new Wallet(privateKey);
-
-            // Log keys to console
-            console.log(`Address: ${wallet.address}`);
-            console.log(`Private Key: ${privateKey}`);
-            console.log(`Public Key: ${publicKey}`);
-
-            // Update state with the new wallet
             setCurrentIndex((prevIndex) => prevIndex + 1);
             setWallets((prevWallets) => [
                 ...prevWallets,
@@ -49,7 +42,6 @@ export const EthWallet = ({ mnemonic }: { mnemonic: string }) => {
     };
     const handleDeleteWalletindex = (currentIndex: number)=>{
         setWallets((wallet)=>wallet.filter((_, index)=>index !==currentIndex));
-        console.log(wallets)
     }
     const handleDeleteWallet = ()=>{
         localStorage.setItem("mnemonic" , "")

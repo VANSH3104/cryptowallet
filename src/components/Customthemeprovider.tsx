@@ -22,7 +22,7 @@ const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const theme = createTheme({
     palette: {
       mode: mode,
-      primary: { main: mode === 'light' ? '#ebf0f4' : '#262626' },
+      primary: { main: mode === 'light' ? '#F5F5F4' : '#262626' },
       background: { default: mode === 'light' ? '#ffffff' : '#00000' },
       text: { primary: mode === 'light' ? '#000000' : '#ffffff' },
     },

@@ -33,7 +33,6 @@ export const GetMnemonics = () => {
     const handleGenerateMnemonic = () => {
         setTimeout(() => {
             const gm = generateMnemonic();
-            console.log(gm);
             setMnemonic(gm);
             toast.success("Mnemonic generated successfully!");
           }, 2000);

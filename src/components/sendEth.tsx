@@ -58,7 +58,6 @@ export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumTy
       });
 
       toast.success(`Transaction successful: ${tx.hash}`);
-      console.log('Transaction Hash:', tx.hash);
     } catch (error) {
       toast.error("Transaction failed.");
       console.error("Transaction Error:", error);
