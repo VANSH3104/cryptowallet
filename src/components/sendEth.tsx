@@ -97,7 +97,7 @@ export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumTy
         }}
         size="large"
         className="w-40 rounded-2xl p-4"
-        color="inherit"
+        color="secondary"
         variant="contained"
         onClick={handleClickOpen}
       >
@@ -126,7 +126,7 @@ export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumTy
                 <div className='flex gap-4'>
                   <h1 className='pt-2'>Beneficiary Address</h1>
                   <Input
-                    color='primary'
+                    color='secondary'
                     size='medium'
                     placeholder='Enter the Recipient Address'
                     onChange={(e) => setRecipient(e.target.value)}
@@ -135,7 +135,7 @@ export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumTy
                 <div className='flex gap-4'>
                   <h1 className='pt-2'>Amount to Send</h1>
                   <Input
-                    color='primary'
+                    color='secondary'
                     size='medium'
                     placeholder='Enter the amount'
                     onChange={(e) => setBalance(parseFloat(e.target.value))}
@@ -143,7 +143,7 @@ export default function EthereumSend({ senderPrivateKey, publicKey }: EthereumTy
                 </div>
               </div>
               <div className='pt-7 w-full items-center flex justify-center'>
-                <Button color='primary' variant="contained" size='large' fullWidth onClick={() => handleTransfer()} >
+                <Button color='secondary' variant="contained" size='large' fullWidth onClick={() => handleTransfer()} >
                   Send
                 </Button>
               </div>
