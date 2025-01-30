@@ -10,7 +10,7 @@ import { Input } from '@mui/material';
 import { forwardRef, Fragment, useEffect, useState } from 'react';
 import axios from "axios";
 import { Connection, Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
-import { toast } from 'react-toastify';  // Import the toast notification
+import { toast } from 'react-toastify';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -100,7 +100,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
         }}
         size="large"
         className="w-40 rounded-2xl p-4"
-        color="inherit"
+        color="secondary"
         variant="contained"
         onClick={handleClickOpen}
       >
@@ -129,7 +129,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
                 <div className='flex gap-4'>
                   <h1 className='pt-2'>Beneficiary Address</h1>
                   <Input
-                    color='primary'
+                    color='secondary'
                     size='medium'
                     placeholder='Enter the Recipient Address'
                     onChange={(e) => setRecipient(e.target.value)}
@@ -138,7 +138,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
                 <div className='flex gap-4'>
                   <h1 className='pt-2'>Amount to Send</h1>
                   <Input
-                    color='primary'
+                    color='secondary'
                     size='medium'
                     placeholder='Enter the amount'
                     onChange={(e) => setBalance(parseInt(e.target.value))}
@@ -146,7 +146,7 @@ export default function SolanaSend({ senderPrivateKey, publicKey }: Solanatype) 
                 </div>
               </div>
               <div className='pt-7 w-full items-center flex justify-center'>
-                <Button color='primary' variant="contained" size='large' fullWidth onClick={() => handleTransfer()} >
+                <Button color='secondary' variant="contained" size='large' fullWidth onClick={() => handleTransfer()} >
                   Send
                 </Button>
               </div>

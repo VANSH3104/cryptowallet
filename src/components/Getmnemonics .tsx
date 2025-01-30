@@ -1,13 +1,13 @@
 import { generateMnemonic } from "bip39";
 import { useLocalStorage } from "react-use";
 import { IoCopy } from "react-icons/io5";
-import { Input, Button } from "@mui/material";
+import { Input, Button, Checkbox } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Buffer } from "buffer";
 import { SolanaWallet } from "./GettingsolanaWallet";
 import { EthWallet } from "./GettingEthWallet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 if (typeof window !== "undefined") {
     window.Buffer = Buffer;
 }
@@ -25,6 +25,14 @@ export const UseMnemonics = (): mnemonicType => {
 export const GetMnemonics = () => {
     const { mnemonic, setMnemonic } = UseMnemonics();
     const [crypt , setCrypt] = useState<string>("");
+    const [change , setChange] = useState<boolean>(false);
+    const [isBlurred, setIsBlurred] = useState(false);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsBlurred(true);
+        }, 4000);
+        return () => clearTimeout(timer);
+    }, []);
     const handleSelectCrypto = (crypto: string) => {
         setCrypt(crypto);
         toast.info(`${crypto} selected`);
@@ -67,7 +75,7 @@ export const GetMnemonics = () => {
                 theme="colored"
             />
             {mnemonic === "" ? (
-                <div className="flex flex-col justify-center items-center md:px-12 lg:px-[166px] p-6">
+                <div className="flex flex-col items-center justify-center p-8">
                     <div className="text-2xl font-bold font-sans mb-4 text-center">
                         Generate Seed or Place Seed
                     </div>
@@ -89,9 +97,11 @@ export const GetMnemonics = () => {
                     </div>
                 </div>
             ) : (
-                <div className="lg:px-[188px]">
-                <div className="bg-white rounded-xl shadow-lg dark:bg-neutral-900 p-6 md:px-12 ">
-                    <div className="grid md:grid-cols-4 md:gap-3 grid-cols-2 gap-1 pt-5">
+                <div className="p-8 flex-col item-center justify-center">
+                { !change && (
+                    <>
+                <div className="bg-white rounded-xl shadow-lg dark:bg-neutral-900 p-7 md:px-12 ">
+                    <div className={`grid md:grid-cols-4 md:gap-3 grid-cols-2 gap-1 pt-5 ${isBlurred ? 'blur-sm' : ''}`}>
                         {mnemonic?.split(" ").map((word, index) => (
                             <div
                                 key={index}
@@ -110,14 +120,21 @@ export const GetMnemonics = () => {
                             <IoCopy className="text-xl" />
                         </Button>
                     </div>
+                    <div className="flex item-center justify-center pt-7 md:gap-2 gap-1">
+                        <h1 className="md:text-xl md:pt-2 pt-3 text-sm ">Save your Key First</h1>
+                    <Checkbox onChange={()=>{
+                        setTimeout(()=>{setChange(true)} , 2000)}} />
+                    </div>
                 </div>
-                {mnemonic !="" && (
+                </>
+            )}
+                {mnemonic !="" && change && (
                 <>
                 {crypt === "" &&(<>
-                <div className="pt-6 text-3xl font-bold ">
+                <div className="pb-4 text-3xl font-bold ">
                     Choose a cryptocurrency
                 </div>
-                <div className="flex gap-2 pt-2">
+                <div className="flex gap-2 ">
                 <Button 
                     sx={{
                         borderRadius: 2,
@@ -127,7 +144,7 @@ export const GetMnemonics = () => {
                     }}
                     size="large"
                         className="w-40 rounded-2xl p-4"
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         onClick={()=>handleSelectCrypto("solana")}
                         >
@@ -142,7 +159,7 @@ export const GetMnemonics = () => {
                     }}
                     size="large"
                         className="w-40 rounded-2xl p-4"
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         onClick={()=>handleSelectCrypto("ethereum")}
                         >
@@ -152,12 +169,12 @@ export const GetMnemonics = () => {
                 </div>
                 </>)}
                 {crypt ==="solana" && (<>
-                    <div className="mt-6 w-full">
+                    <div className="">
                     <SolanaWallet mnemonic={`${mnemonic}`} />
                 </div>
                 </>)}
                 {crypt === "ethereum" && (<>
-                    <div className="mt-6">
+                    <div className="">
                     <EthWallet mnemonic={`${mnemonic}`} />
                 </div>
                 </>)}
